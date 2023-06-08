@@ -269,13 +269,10 @@ def dqn_learing(
                 current_q_values = Q(obs_batch).gather(1, act_batch.unsqueeze(1)).squeeze()
                 next_q_values = target_q_func(next_obs_batch).detach().max(1)[0]
                 #Compute Bellman error
-                error = pow(rew_batch + gamma * next_q_values * (1 - done_mask) - current_q_values, 2)
-                #detach error from graph
-                if error.device.type == 'cuda':
-                    error = error.cpu()
-                error = error.detach().numpy()
+                #Compute Bellman error
+                error = rew_batch + gamma * next_q_values * (1 - done_mask) - current_q_values
                 #Clip error between [-1,1]
-                d_error = -1.0 * np.clip(error, -1, 1)
+                d_error = -1.0 * torch.clip(error, -1, 1)
                 #turn d_error to torch variable
                 d_error = Variable(torch.from_numpy(d_error).type(dtype))
                 #Train the model
