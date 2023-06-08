@@ -273,8 +273,6 @@ def dqn_learing(
                 error = rew_batch + gamma * next_q_values * (1 - done_mask) - current_q_values
                 #Clip error between [-1,1]
                 d_error = -1.0 * torch.clip(error, -1, 1)
-                #turn d_error to torch variable
-                d_error = Variable(torch.from_numpy(d_error).type(dtype))
                 #Train the model
                 optimizer.zero_grad()
                 current_q_values.backward(d_error.data)
