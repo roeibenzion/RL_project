@@ -196,11 +196,7 @@ def dqn_learing(
         #Store last observation
         idx = replay_buffer.store_frame(last_obs)
         #Encode recent observation
-         if t == 0:
-            obs = np.concatenate((last_obs, last_obs, last_obs, last_obs), 2)
-            obs = np.moveaxis(obs, -1, 0)
-         else:
-            obs = replay_buffer.encode_recent_observation()
+        obs = replay_buffer.encode_recent_observation()
         #Select action
         action = select_epilson_greedy_action(Q, obs, t)
         #Step environment
