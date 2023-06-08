@@ -57,5 +57,5 @@ if __name__ == '__main__':
     seed = 0 # Use a seed of zero (you may want to randomize the seed!)
     env = get_env(task, seed)
     
-    print("going to run for: " 1e6 * 4)
+    print("going to run for: ", 1e6 * 4)
     main(env, 1e6 * 4)
