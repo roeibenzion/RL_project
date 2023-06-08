@@ -103,13 +103,7 @@ def dqn_learing(
     # BUILD MODEL #
     ###############
 
-    #Graph statistics
-    #Will be number of time steps
-    x_axis = []
-    #Will be mean 100 episode reward
-    y_axis_mean = []
-    #will be best mean 100 episode reward
-    y_axis_best_mean = []
+  
 
     if len(env.observation_space.shape) == 1:
         # This means we are running on low-dimensional observations (e.g. RAM)
@@ -306,10 +300,6 @@ def dqn_learing(
             with open('statistics.pkl', 'wb') as f:
                 pickle.dump(Statistic, f)
                 print("Saved to %s" % 'statistics.pkl')
-            # Maintain plots
-            x_axis.append(t)
-            y_axis_mean.append(mean_episode_reward)
-            y_axis_best_mean.append(best_mean_episode_reward)
-
+      
 
 
