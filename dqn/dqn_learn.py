@@ -145,7 +145,9 @@ def dqn_learing(
 
     # Construct the replay buffer
     replay_buffer = ReplayBuffer(replay_buffer_size, frame_history_len)
-
+    
+    sdsd
+    exit(0)
     ###############
     # RUN ENV     #
     ###############
