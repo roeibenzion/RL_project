@@ -58,4 +58,4 @@ if __name__ == '__main__':
     env = get_env(task, seed)
     
     print("going to run for: ", int(1e6 * 4))
-    main(env, int(1e6 * 4))
+    main(env, 100000)
