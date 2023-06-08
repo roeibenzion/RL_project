@@ -136,6 +136,9 @@ def dqn_learing(
     # YOUR CODE HERE
     Q = q_func(input_arg, num_actions)
     target_q_func = q_func(input_arg, num_actions)
+    if USE_CUDA:
+        Q = Q.cuda()
+        target_q_func = target_q_func.cuda()
     ######
     # Construct Q network optimizer function
     optimizer = optimizer_spec.constructor(Q.parameters(), **optimizer_spec.kwargs)
