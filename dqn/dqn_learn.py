@@ -273,6 +273,8 @@ def dqn_learing(
                 #Compute Bellman error
                 error = pow(rew_batch + gamma * next_q_values * (1 - done_mask) - current_q_values, 2)
                 #detach error from graph
+                if error.device.type == 'cuda':
+                    error = error.cpu()
                 error = error.detach().numpy()
                 #Clip error between [-1,1]
                 d_error = -1.0 * np.clip(error, -1, 1)
