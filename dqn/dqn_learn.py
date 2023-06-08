@@ -311,15 +311,5 @@ def dqn_learing(
             y_axis_mean.append(mean_episode_reward)
             y_axis_best_mean.append(best_mean_episode_reward)
 
-    #Plot statistics
-    print("hahaha")
-    x = [1e6, 2e6, 3e6, 4e6]
-    y = [5, 10, 15, 20]
-    
-    plt.plot(x, y)
-    plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
-    plt.plot(x_axis, y_axis_mean, 'r-', label='Mean 100 Episode Reward')
-    plt.plot(x_axis, y_axis_best_mean, 'b-', label='Best Mean 100 Episode Reward')
-    print("hahaha")
 
 
