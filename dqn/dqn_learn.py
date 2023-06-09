@@ -326,4 +326,10 @@ def dqn_learing(
             with open(target_q_func_pckl, 'wb') as f:
                 pickle.dump(target_q_func, f)
                 print("Saved to %s" % str(target_q_func_pckl))
+               
+            # keep my own count of time steps
+            with open('/content/drive/MyDrive/RL_project/Pre_trained/time_steps.txt', 'wb') as f:
+                #save the number to text file
+                f.write(str(t).encode('utf-8'))
+                print("Saved to %s" % '/content/drive/MyDrive/RL_project/Pre_trained/time_steps.txt')
 
