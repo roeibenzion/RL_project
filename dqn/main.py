@@ -6,6 +6,8 @@ from dqn_learn import OptimizerSpec, dqn_learing
 from utils.gym import get_env, get_wrapper_by_name
 from utils.schedule import LinearSchedule
 
+import pickle
+
 BATCH_SIZE = 32
 GAMMA = 0.99
 REPLAY_BUFFER_SIZE = 1000000
@@ -17,7 +19,7 @@ LEARNING_RATE = 0.00025
 ALPHA = 0.95
 EPS = 0.01
 
-def main(env, num_timesteps):
+def main(env, num_timesteps, pre_trained_model=None):
 
     def stopping_criterion(env):
         # notice that here t is the number of steps of the wrapped env,
@@ -46,6 +48,7 @@ def main(env, num_timesteps):
         learning_freq=LEARNING_FREQ,
         frame_history_len=FRAME_HISTORY_LEN,
         target_update_freq=TARGER_UPDATE_FREQ,
+        pre_trained_model=pre_trained_model
     )
 
 if __name__ == '__main__':
@@ -58,6 +61,17 @@ if __name__ == '__main__':
     # Run training
     seed = 0 # Use a seed of zero (you may want to randomize the seed!)
     env = get_env(task, seed)
-    
-    print("going to run for: ", int(1e6 * 16))
-    main(env, int(1e6 * 16))
+
+    #open pre_trained_model if exists
+    Q_pckl = None
+    target_pckl = None
+    try:
+        with open('Q_pckl.pkl', 'rb') as f:
+            Q_pckl = pickle.load(f)
+        with open('target_pckl.pkl', 'rb') as f:
+            target_pckl = pickle.load(f)
+        pre_trained_model = (Q_pckl, target_pckl)
+    except:
+        print("No pre_trained_model found")
+
+    main(env, 1e6 * 16, pre_trained_model)
