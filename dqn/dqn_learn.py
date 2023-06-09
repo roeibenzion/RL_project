@@ -53,7 +53,8 @@ def dqn_learing(
     learning_freq=4,
     frame_history_len=4,
     target_update_freq=10000,
-    pre_trained_model=None
+    pre_trained_model=None,
+    start_from=0
     ):
 
     """Run Deep Q-learning algorithm.
@@ -305,7 +306,7 @@ def dqn_learing(
         Statistic["best_mean_episode_rewards"].append(best_mean_episode_reward)
 
         if t % LOG_EVERY_N_STEPS == 0 and t > learning_starts:
-            print("Timestep %d" % (t,))
+            print("Timestep %d" % (t+start_from,))
             print("mean reward (100 episodes) %f" % mean_episode_reward)
             print("best mean reward %f" % best_mean_episode_reward)
             print("episodes %d" % len(episode_rewards))
@@ -313,9 +314,9 @@ def dqn_learing(
             sys.stdout.flush()
 
             # Dump statistics to pickle
-            with open('/content/drive/MyDrive/RL_project/Pre_trained/statistics.pkl', 'wb') as f:
+            with open('statistics.pkl', 'wb') as f:
                 pickle.dump(Statistic, f)
-                print("Saved to %s" % '/content/drive/MyDrive/RL_project/Pre_trained/statistics.pkl')
+                print("Saved to %s" % 'statistics.pkl')
             
             # Dump model to pickle
             with open(Q_pckl, 'wb') as f:
@@ -326,10 +327,11 @@ def dqn_learing(
             with open(target_q_func_pckl, 'wb') as f:
                 pickle.dump(target_q_func, f)
                 print("Saved to %s" % str(target_q_func_pckl))
-               
+
             # keep my own count of time steps
             with open('/content/drive/MyDrive/RL_project/Pre_trained/time_steps.txt', 'wb') as f:
                 #save the number to text file
                 f.write(str(t).encode('utf-8'))
                 print("Saved to %s" % '/content/drive/MyDrive/RL_project/Pre_trained/time_steps.txt')
+            
 
