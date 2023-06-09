@@ -328,10 +328,21 @@ def dqn_learing(
                 pickle.dump(target_q_func, f)
                 print("Saved to %s" % str(target_q_func_pckl))
 
-            # keep my own count of time steps
-            with open('/content/drive/MyDrive/RL_project/Pre_trained/time_steps.txt', 'wb') as f:
-                #save the number to text file
-                f.write(str(t).encode('utf-8'))
-                print("Saved to %s" % '/content/drive/MyDrive/RL_project/Pre_trained/time_steps.txt')
+            #keep my stats
+            with open('/content/drive/MyDrive/RL_project/Pre_trained/my_stats.txt', 'w') as f:
+                #write the mean episode rewards
+                f.write('mean_episode_rewards:\n')
+                for i in range(len(Statistic["mean_episode_rewards"])):
+                    f.write(str(Statistic["mean_episode_rewards"][i])+',')
+                f.write('\n')
+                #write the best episode rewards
+                f.write('best_episode_rewards:\n')
+                for i in range(len(Statistic["best_mean_episode_rewards"])):
+                    f.write(str(Statistic["best_mean_episode_rewards"][i])+',')
+                f.write('\n')
+                #write the number of steps we stopped in
+                f.write('stopped in timestep:\n')
+                f.write(str(t)+'\n')
+            
             
 
