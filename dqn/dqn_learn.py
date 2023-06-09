@@ -52,7 +52,8 @@ def dqn_learing(
     learning_starts=50000,
     learning_freq=4,
     frame_history_len=4,
-    target_update_freq=10000
+    target_update_freq=10000,
+    pre_trained_model=None
     ):
 
     """Run Deep Q-learning algorithm.
@@ -103,8 +104,6 @@ def dqn_learing(
     # BUILD MODEL #
     ###############
 
-  
-
     if len(env.observation_space.shape) == 1:
         # This means we are running on low-dimensional observations (e.g. RAM)
         input_arg = env.observation_space.shape[0]
@@ -128,18 +127,32 @@ def dqn_learing(
     # Initialize target q function and q function, i.e. build the model.
     ######
     # YOUR CODE HERE
-    Q = q_func(input_arg, num_actions)
-    target_q_func = q_func(input_arg, num_actions)
+    if pre_trained_model is None:
+        Q = q_func(input_arg, num_actions)
+        target_q_func = q_func(input_arg, num_actions)
+        target_q_func.load_state_dict(Q.state_dict())
+        # add a location to save to trained models
+        Q_pckl = '/content/drive/MyDrive/RL_project/Pre_trained/Q.pkl'
+        target_q_func_pckl = '/content/drive/MyDrive/RL_project/Pre_trained/target_q_func.pkl' 
+    #Added the option to proceed training a pre-trained model for runs in colab
+    else:
+        Q_pckl = pre_trained_model[0]
+        target_q_func_pckl = pre_trained_model[1]
+        with open(Q_pckl, 'rb') as f:
+            Q = pickle.load(f)
+        with open(target_q_func_pckl, 'rb') as f:
+            target_q_func = pickle.load(f)
+    
     if USE_CUDA:
-        Q = Q.cuda()
-        target_q_func = target_q_func.cuda()
+            Q = Q.cuda()
+            target_q_func = target_q_func.cuda()
     ######
     # Construct Q network optimizer function
     optimizer = optimizer_spec.constructor(Q.parameters(), **optimizer_spec.kwargs)
 
     # Construct the replay buffer
     replay_buffer = ReplayBuffer(replay_buffer_size, frame_history_len)
-    
+
     ###############
     # RUN ENV     #
     ###############
@@ -188,7 +201,11 @@ def dqn_learing(
         #Store last observation
         idx = replay_buffer.store_frame(last_obs)
         #Encode recent observation
-        obs = replay_buffer.encode_recent_observation()
+        if t == 0:
+            obs = np.concatenate((last_obs, last_obs, last_obs, last_obs), 2)
+            obs = np.moveaxis(obs, -1, 0)
+        else:
+            obs = replay_buffer.encode_recent_observation()
         #Select action
         action = select_epilson_greedy_action(Q, obs, t)
         #Step environment
@@ -263,7 +280,6 @@ def dqn_learing(
                 current_q_values = Q(obs_batch).gather(1, act_batch.unsqueeze(1)).squeeze()
                 next_q_values = target_q_func(next_obs_batch).detach().max(1)[0]
                 #Compute Bellman error
-                #Compute Bellman error
                 error = rew_batch + gamma * next_q_values * (1 - done_mask) - current_q_values
                 #Clip error between [-1,1]
                 d_error = -1.0 * torch.clip(error, -1, 1)
@@ -300,6 +316,14 @@ def dqn_learing(
             with open('statistics.pkl', 'wb') as f:
                 pickle.dump(Statistic, f)
                 print("Saved to %s" % 'statistics.pkl')
-      
-
+            
+            # Dump model to pickle
+            with open(Q_pckl, 'wb') as f:
+                pickle.dump(Q, f)
+                print("Saved to %s" % str(Q_pckl))
+            
+            # Dump target model to pickle
+            with open(target_q_func_pckl, 'wb') as f:
+                pickle.dump(target_q_func, f)
+                print("Saved to %s" % str(target_q_func_pckl))
 
