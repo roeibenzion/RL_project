@@ -67,9 +67,9 @@ if __name__ == '__main__':
     target_pckl = None
     pre_trained_model = None
     try:
-        with open('Q_pckl.pkl', 'rb') as f:
+        with open('/content/drive/MyDrive/RL_project/Pre_trained/Q.pkl', 'rb') as f:
             Q_pckl = pickle.load(f)
-        with open('target_pckl.pkl', 'rb') as f:
+        with open('/content/drive/MyDrive/RL_project/Pre_trained/target_q_func.pkl', 'rb') as f:
             target_pckl = pickle.load(f)
         pre_trained_model = (Q_pckl, target_pckl)
     except:
