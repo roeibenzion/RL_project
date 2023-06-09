@@ -22,6 +22,7 @@ def main(env, num_timesteps):
     def stopping_criterion(env):
         # notice that here t is the number of steps of the wrapped env,
         # which is different from the number of steps in the underlying env
+        print("The number of steps left:" , max(0, num_timesteps - get_wrapper_by_name(env, "Monitor").get_total_steps()))
         return get_wrapper_by_name(env, "Monitor").get_total_steps() >= num_timesteps
 
     optimizer_spec = OptimizerSpec(
