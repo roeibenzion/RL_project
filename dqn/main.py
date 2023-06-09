@@ -19,7 +19,7 @@ LEARNING_RATE = 0.00025
 ALPHA = 0.95
 EPS = 0.01
 
-def main(env, num_timesteps, pre_trained_model=None):
+def main(env, num_timesteps, pre_trained_model=None, start_from=0):
 
     def stopping_criterion(env):
         # notice that here t is the number of steps of the wrapped env,
@@ -63,9 +63,11 @@ if __name__ == '__main__':
     env = get_env(task, seed)
 
     #open pre_trained_model if exists
+    pre_trained_model = None
     Q_pckl = None
     target_pckl = None
-    pre_trained_model = None
+    my_stats = None
+    start_from = 0
     try:
         with open('/content/drive/MyDrive/RL_project/Pre_trained/Q.pkl', 'rb') as f:
             Q_pckl = '/content/drive/MyDrive/RL_project/Pre_trained/Q.pkl'
@@ -74,5 +76,13 @@ if __name__ == '__main__':
         pre_trained_model = (Q_pckl, target_pckl)
     except:
         print("No pre_trained_model found")
+    
+    try:
+        with open('/content/drive/MyDrive/RL_project/Pre_trained/my_stats.txt', 'r') as f:
+            my_stats = '/content/drive/MyDrive/RL_project/Pre_trained/my_stats.txt'
+            #the last line in my_stats is where we stopped
+            start_from = int(f.readlines()[-1])
+    except:
+        print("No my_stats.txt found")
 
-    main(env, 1e6 * 16, pre_trained_model)
+    main(env, 1e6 * 16, pre_trained_model, start_from)
