@@ -68,9 +68,9 @@ if __name__ == '__main__':
     pre_trained_model = None
     try:
         with open('/content/drive/MyDrive/RL_project/Pre_trained/Q.pkl', 'rb') as f:
-            Q_pckl = pickle.load(f)
+            Q_pckl = '/content/drive/MyDrive/RL_project/Pre_trained/Q.pkl'
         with open('/content/drive/MyDrive/RL_project/Pre_trained/target_q_func.pkl', 'rb') as f:
-            target_pckl = pickle.load(f)
+            target_pckl = '/content/drive/MyDrive/RL_project/Pre_trained/target_q_func.pkl'
         pre_trained_model = (Q_pckl, target_pckl)
     except:
         print("No pre_trained_model found")
