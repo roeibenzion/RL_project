@@ -65,6 +65,7 @@ if __name__ == '__main__':
     #open pre_trained_model if exists
     Q_pckl = None
     target_pckl = None
+    pre_trained_model = None
     try:
         with open('Q_pckl.pkl', 'rb') as f:
             Q_pckl = pickle.load(f)
