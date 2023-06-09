@@ -315,7 +315,7 @@ def dqn_learing(
             # Dump statistics to pickle
             with open('statistics.pkl', 'wb') as f:
                 pickle.dump(Statistic, f)
-                print("Saved to %s" % 'statistics.pkl')
+                print("Saved to %s" % '/content/drive/MyDrive/RL_project/Pre_trained/statistics.pkl')
             
             # Dump model to pickle
             with open(Q_pckl, 'wb') as f:
