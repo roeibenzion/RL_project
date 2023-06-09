@@ -314,9 +314,9 @@ def dqn_learing(
             sys.stdout.flush()
 
             # Dump statistics to pickle
-            with open('statistics.pkl', 'wb') as f:
+            with open('/content/drive/MyDrive/RL_project/Pre_trained/statistics.pkl', 'wb') as f:
                 pickle.dump(Statistic, f)
-                print("Saved to %s" % 'statistics.pkl')
+                print("Saved to %s" % '/content/drive/MyDrive/RL_project/Pre_trained/statistics.pkl')
             
             # Dump model to pickle
             with open(Q_pckl, 'wb') as f:
@@ -328,21 +328,7 @@ def dqn_learing(
                 pickle.dump(target_q_func, f)
                 print("Saved to %s" % str(target_q_func_pckl))
 
-            #keep my stats
-            with open('/content/drive/MyDrive/RL_project/Pre_trained/my_stats.txt', 'w') as f:
-                #write the mean episode rewards
-                f.write('mean_episode_rewards:\n')
-                for i in range(len(Statistic["mean_episode_rewards"])):
-                    f.write(str(Statistic["mean_episode_rewards"][i])+',')
-                f.write('\n')
-                #write the best episode rewards
-                f.write('best_episode_rewards:\n')
-                for i in range(len(Statistic["best_mean_episode_rewards"])):
-                    f.write(str(Statistic["best_mean_episode_rewards"][i])+',')
-                f.write('\n')
-                #write the number of steps we stopped in
-                f.write('stopped in timestep:\n')
-                f.write(str(t)+'\n')
+            
             
             
 
