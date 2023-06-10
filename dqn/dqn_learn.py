@@ -326,7 +326,7 @@ def dqn_learing(
                 pickle.dump(target_q_func, f)
                 print("Saved to %s" % target_q_func_pckl)
             
-            repo_path = 'https://github.com/roeibenzion/RL_project/tree/main/dqn'
+            repo_path = ''
             # Initialize the Git repository
             repo = Repo(repo_path)
 
