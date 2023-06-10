@@ -54,7 +54,6 @@ def dqn_learing(
     frame_history_len=4,
     target_update_freq=10000,
     pre_trained_model=None,
-    start_from=0
     ):
 
     """Run Deep Q-learning algorithm.
@@ -306,7 +305,7 @@ def dqn_learing(
         Statistic["best_mean_episode_rewards"].append(best_mean_episode_reward)
 
         if t % LOG_EVERY_N_STEPS == 0 and t > learning_starts:
-            print("Timestep %d" % (t+start_from,))
+            print("Timestep %d" % (t))
             print("mean reward (100 episodes) %f" % mean_episode_reward)
             print("best mean reward %f" % best_mean_episode_reward)
             print("episodes %d" % len(episode_rewards))
@@ -328,7 +327,6 @@ def dqn_learing(
                 pickle.dump(target_q_func, f)
                 print("Saved to %s" % str(target_q_func_pckl))
 
-            
-            
+           
             
 
