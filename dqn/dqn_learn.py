@@ -129,6 +129,7 @@ def dqn_learing(
     # Initialize target q function and q function, i.e. build the model.
     ######
     # YOUR CODE HERE
+    repo_path = '/'
     if pre_trained_model is None:
         Q = q_func(input_arg, num_actions)
         target_q_func = q_func(input_arg, num_actions)
@@ -326,7 +327,7 @@ def dqn_learing(
                 pickle.dump(target_q_func, f)
                 print("Saved to %s" % target_q_func_pckl)
             
-            repo_path = ''
+            
             # Initialize the Git repository
             repo = Repo(repo_path)
 
