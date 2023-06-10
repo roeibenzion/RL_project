@@ -7,6 +7,7 @@ from utils.gym import get_env, get_wrapper_by_name
 from utils.schedule import LinearSchedule
 
 import pickle
+import os
 
 BATCH_SIZE = 32
 GAMMA = 0.99
@@ -68,12 +69,21 @@ if __name__ == '__main__':
     my_stats = None
     start_from = 0
     try:
-        with open('/content/drive/MyDrive/RL_project/Pre_trained/Q.pkl', 'rb') as f:
-            Q_pckl = '/content/drive/MyDrive/RL_project/Pre_trained/Q.pkl'
-        with open('/content/drive/MyDrive/RL_project/Pre_trained/target_q_func.pkl', 'rb') as f:
-            target_pckl = '/content/drive/MyDrive/RL_project/Pre_trained/target_q_func.pkl'
+        with open('/pre_trained_Q.pkl', 'rb') as f:
+            #check if the file is empty, if so raise an exception
+            if os.path.getsize('/pre_trained_Q.pkl') == 0:
+                #catch with exception
+                raise Exception('File is empty')
+            Q_pckl = 'pre_trained_Q.pkl'
+        with open('/pre_trained_tar_Q.pkl', 'rb') as f:
+            if os.path.getsize('/pre_trained_Q.pkl') == 0:
+                #catch with exception
+                raise Exception('File is empty')
+            target_pckl = '/pre_trained_tar_Q.pkl'
         pre_trained_model = (Q_pckl, target_pckl)
     except:
+        Q_pckl = None
+        target_pckl = None
         print("No pre_trained_model found")
     
     main(env, 1e6 * 16, pre_trained_model)
