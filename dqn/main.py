@@ -69,17 +69,17 @@ if __name__ == '__main__':
     my_stats = None
     start_from = 0
     try:
-        with open('/pre_trained_Q.pkl', 'rb') as f:
+       with open('pre_trained_Q.pkl', 'rb') as f:
             #check if the file is empty, if so raise an exception
-            if os.path.getsize('/pre_trained_Q.pkl') == 0:
+            if os.path.getsize('pre_trained_Q.pkl') <= 1:
                 #catch with exception
                 raise Exception('File is empty')
             Q_pckl = 'pre_trained_Q.pkl'
-        with open('/pre_trained_tar_Q.pkl', 'rb') as f:
-            if os.path.getsize('/pre_trained_Q.pkl') == 0:
+        with open('pre_trained_tar_Q.pkl', 'rb') as f:
+            if os.path.getsize('pre_trained_Q.pkl') <= 1:
                 #catch with exception
                 raise Exception('File is empty')
-            target_pckl = '/pre_trained_tar_Q.pkl'
+            target_pckl = 'pre_trained_tar_Q.pkl'
         pre_trained_model = (Q_pckl, target_pckl)
     except:
         Q_pckl = None
