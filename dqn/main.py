@@ -48,7 +48,6 @@ def main(env, num_timesteps, pre_trained_model=None, start_from=0):
         learning_freq=LEARNING_FREQ,
         frame_history_len=FRAME_HISTORY_LEN,
         target_update_freq=TARGER_UPDATE_FREQ,
-        pre_trained_model=pre_trained_model
     )
 
 if __name__ == '__main__':
@@ -77,12 +76,4 @@ if __name__ == '__main__':
     except:
         print("No pre_trained_model found")
     
-    try:
-        with open('/content/drive/MyDrive/RL_project/Pre_trained/my_stats.txt', 'r') as f:
-            my_stats = '/content/drive/MyDrive/RL_project/Pre_trained/my_stats.txt'
-            #the last line in my_stats is where we stopped
-            start_from = int(f.readlines()[-1])
-    except:
-        print("No my_stats.txt found")
-
-    main(env, 1e6 * 16, pre_trained_model, start_from)
+    main(env, 1e6 * 16, pre_trained_model)
