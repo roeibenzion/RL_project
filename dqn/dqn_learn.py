@@ -130,7 +130,7 @@ def dqn_learing(
     ######
     # YOUR CODE HERE
     # Initialize the Git repository
-    repo = Repo(os.cwd())
+    repo = Repo.init(os.getcwd())
     if pre_trained_model is None:
         Q = q_func(input_arg, num_actions)
         target_q_func = q_func(input_arg, num_actions)
