@@ -131,7 +131,8 @@ def dqn_learing(
     ######
     # YOUR CODE HERE
     # Initialize the Git repository as current working directory 
-    repo = Repo.init(os.getcwd())
+    #repo = Repo.init(os.getcwd())
+    #origin = repo.remote('origin')
 
     if pre_trained_model is None:
         Q = q_func(input_arg, num_actions)
@@ -322,6 +323,7 @@ def dqn_learing(
             with open('statistics.pkl', 'wb') as f:
                 pickle.dump(Statistic, f)
                 print("Saved to %s" % '/statistics.pkl')
+            '''
             # Dump Q and target Q to pickle
             with open(Q_pckl, 'wb') as f:
                 pickle.dump(Q, f)
@@ -329,9 +331,9 @@ def dqn_learing(
             with open(target_q_func_pckl, 'wb') as f:
                 pickle.dump(target_q_func, f)
                 print("Saved to %s" % target_q_func_pckl)
+            '''
             
-            
-            
+            '''
             # Stage the pickle file for commit
             repo.index.add(['statistics.pkl', Q_pckl, target_q_func_pckl])
 
@@ -341,8 +343,7 @@ def dqn_learing(
             repo.index.commit("Add {}".format(target_q_func_pckl))
 
             # Push the changes to the remote repository
-            origin = repo.remote('origin')
             origin.push()
-                        
+            '''          
             
 
