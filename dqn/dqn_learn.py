@@ -19,6 +19,8 @@ from utils.gym import get_wrapper_by_name
 
 import matplotlib.pyplot as plt
 
+from git import Repo
+
 USE_CUDA = torch.cuda.is_available()
 dtype = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
 
@@ -324,5 +326,21 @@ def dqn_learing(
                 pickle.dump(target_q_func, f)
                 print("Saved to %s" % target_q_func_pckl)
             
+            repo_path = 'https://github.com/roeibenzion/RL_project/tree/main/dqn'
+            # Initialize the Git repository
+            repo = Repo(repo_path)
+
+            # Stage the pickle file for commit
+            repo.index.add(['statistics.pkl', Q_pckl, target_q_func_pckl])
+
+            # Commit the changes
+            repo.index.commit("Add {}".format('statistics.pkl'))
+            repo.index.commit("Add {}".format(Q_pckl))
+            repo.index.commit("Add {}".format(target_q_func_pckl))
+
+            # Push the changes to the remote repository
+            origin = repo.remote('origin')
+            origin.push()
+                        
             
 
