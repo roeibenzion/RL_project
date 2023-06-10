@@ -20,6 +20,7 @@ from utils.gym import get_wrapper_by_name
 import matplotlib.pyplot as plt
 
 from git import Repo
+import os
 
 USE_CUDA = torch.cuda.is_available()
 dtype = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
