@@ -330,8 +330,7 @@ def dqn_learing(
                 print("Saved to %s" % target_q_func_pckl)
             
             
-            # Initialize the Git repository
-            repo = Repo(repo_path)
+        
 
             # Stage the pickle file for commit
             repo.index.add(['statistics.pkl', Q_pckl, target_q_func_pckl])
