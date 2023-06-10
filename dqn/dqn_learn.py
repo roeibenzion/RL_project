@@ -132,8 +132,8 @@ def dqn_learing(
         target_q_func = q_func(input_arg, num_actions)
         target_q_func.load_state_dict(Q.state_dict())
         # add a location to save to trained models
-        Q_pckl = '/content/drive/MyDrive/RL_project/Pre_trained/Q.pkl'
-        target_q_func_pckl = '/content/drive/MyDrive/RL_project/Pre_trained/target_q_func.pkl' 
+        Q_pckl = '/pre_trained_Q.pkl'
+        target_q_func_pckl = '/pre_trained_tar_Q.pkl.pkl' 
     #Added the option to proceed training a pre-trained model for runs in colab
     else:
         Q_pckl = pre_trained_model[0]
@@ -313,9 +313,9 @@ def dqn_learing(
             sys.stdout.flush()
 
             # Dump statistics to pickle
-            with open('/content/drive/MyDrive/RL_project/Pre_trained/statistics.pkl', 'wb') as f:
+            with open('/statistics.pkl', 'wb') as f:
                 pickle.dump(Statistic, f)
-                print("Saved to %s" % '/content/drive/MyDrive/RL_project/Pre_trained/statistics.pkl')
+                print("Saved to %s" % '/statistics.pkl')
             
             # Dump model to pickle
             with open(Q_pckl, 'wb') as f:
