@@ -130,8 +130,9 @@ def dqn_learing(
     # Initialize target q function and q function, i.e. build the model.
     ######
     # YOUR CODE HERE
-    # Initialize the Git repository
+    # Initialize the Git repository as current working directory 
     repo = Repo.init(os.getcwd())
+
     if pre_trained_model is None:
         Q = q_func(input_arg, num_actions)
         target_q_func = q_func(input_arg, num_actions)
@@ -330,8 +331,7 @@ def dqn_learing(
                 print("Saved to %s" % target_q_func_pckl)
             
             
-        
-
+            
             # Stage the pickle file for commit
             repo.index.add(['statistics.pkl', Q_pckl, target_q_func_pckl])
 
