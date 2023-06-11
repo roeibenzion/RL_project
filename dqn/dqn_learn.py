@@ -312,34 +312,12 @@ def dqn_learing(
                 pickle.dump(Statistic, f)
                 print("Saved to %s" % '/statistics.pkl')
             
+            import shutil
+
+            # Copy the file to Google Drive
+            shutil.copy('statistics.pkl', '/content/drive/MyDrive/statistics.pkl')
             
-            # save the statistics to my git as well
-            from github import Github
-
-            # Assuming you have set up your access token as `access_token`
-            # and repository details as `repo_owner`, `repo_name`
-            access_token = "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"
-            repo_owner = "roeibenzion"
-            repo_name = "RL_project"
-            file_path = "dqn/statistics.pkl"
-
-            # Load the content of the file
-            with open(file_path, 'r') as file:
-                file_content = file.read()
-
-            # Authenticate and get the repository
-            g = Github(access_token)
-            repo = g.get_repo(f"{repo_owner}/{repo_name}")
-
-            # Create or update the file in the repository
-            try:
-                # Get the file's content
-                repo_file = repo.get_contents(file_path)
-
-                # Update the file with new content
-                repo.update_file(file_path, "Update results", file_content, repo_file.sha)
-            except:
-                # If the file doesn't exist, create it
-                repo.create_file(file_path, "Create results", file_content)
+            
+            
             
             
