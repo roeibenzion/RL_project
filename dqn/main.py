@@ -69,4 +69,8 @@ if __name__ == '__main__':
     my_stats = None
     start_from = 0
     
+    from google.colab import drive
+
+    drive.mount('/content/drive')
+    
     main(env, 1e6 * 16, pre_trained_model)
