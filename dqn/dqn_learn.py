@@ -19,7 +19,6 @@ from utils.gym import get_wrapper_by_name
 
 import matplotlib.pyplot as plt
 
-from git import Repo
 import os
 
 USE_CUDA = torch.cuda.is_available()
@@ -130,26 +129,15 @@ def dqn_learing(
     # Initialize target q function and q function, i.e. build the model.
     ######
     # YOUR CODE HERE
-    # Initialize the Git repository as current working directory 
-    #repo = Repo.init(os.getcwd())
-    #origin = repo.remote('origin')
 
-    if pre_trained_model is None:
-        Q = q_func(input_arg, num_actions)
-        target_q_func = q_func(input_arg, num_actions)
-        target_q_func.load_state_dict(Q.state_dict())
-        # add a location to save to trained models
-        Q_pckl = 'pre_trained_Q.pkl'
-        target_q_func_pckl = 'pre_trained_tar_Q.pkl' 
-    #Added the option to proceed training a pre-trained model for runs in colab
-    else:
-        Q_pckl = pre_trained_model[0]
-        target_q_func_pckl = pre_trained_model[1]
-        with open(Q_pckl, 'rb') as f:
-            Q = pickle.load(f)
-        with open(target_q_func_pckl, 'rb') as f:
-            target_q_func = pickle.load(f)
-    
+    #check if a file called statistics.pkl exists in the git repository
+    if os.path.isfile('statistics.pkl'):
+        print("statistics.pkl exists")
+
+    Q = q_func(input_arg, num_actions)
+    target_q_func = q_func(input_arg, num_actions)
+    target_q_func.load_state_dict(Q.state_dict())
+
     if USE_CUDA:
             Q = Q.cuda()
             target_q_func = target_q_func.cuda()
@@ -323,27 +311,35 @@ def dqn_learing(
             with open('statistics.pkl', 'wb') as f:
                 pickle.dump(Statistic, f)
                 print("Saved to %s" % '/statistics.pkl')
-            '''
-            # Dump Q and target Q to pickle
-            with open(Q_pckl, 'wb') as f:
-                pickle.dump(Q, f)
-                print("Saved to %s" % Q_pckl)
-            with open(target_q_func_pckl, 'wb') as f:
-                pickle.dump(target_q_func, f)
-                print("Saved to %s" % target_q_func_pckl)
-            '''
             
-            '''
-            # Stage the pickle file for commit
-            repo.index.add(['statistics.pkl', Q_pckl, target_q_func_pckl])
-
-            # Commit the changes
-            repo.index.commit("Add {}".format('statistics.pkl'))
-            repo.index.commit("Add {}".format(Q_pckl))
-            repo.index.commit("Add {}".format(target_q_func_pckl))
-
-            # Push the changes to the remote repository
-            origin.push()
-            '''          
             
+            # save the statistics to my git as well
+            from github import Github
 
+            # Assuming you have set up your access token as `access_token`
+            # and repository details as `repo_owner`, `repo_name`
+            access_token = "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"
+            repo_owner = "roeibenzion"
+            repo_name = "RL_project"
+            file_path = "dqn/statistics.pkl"
+
+            # Load the content of the file
+            with open(file_path, 'r') as file:
+                file_content = file.read()
+
+            # Authenticate and get the repository
+            g = Github(access_token)
+            repo = g.get_repo(f"{repo_owner}/{repo_name}")
+
+            # Create or update the file in the repository
+            try:
+                # Get the file's content
+                repo_file = repo.get_contents(file_path)
+
+                # Update the file with new content
+                repo.update_file(file_path, "Update results", file_content, repo_file.sha)
+            except:
+                # If the file doesn't exist, create it
+                repo.create_file(file_path, "Create results", file_content)
+            
+            
