@@ -140,7 +140,7 @@ def dqn_learing(
         return np.random.choice(num_actions, 1, p=prob)[0]
     '''
     #We'll try an exponential decay of epsilon
-    epsilon_min = 0.02
+    epsilon_min = 0.1
     epsilon_decay = 0.0002
     def select_epilson_greedy_action(model, obs, decay_step):
         explore_probability = epsilon_min + (1 - epsilon_min) * np.exp(-epsilon_decay * decay_step)
