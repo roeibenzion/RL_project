@@ -133,6 +133,7 @@ def dqn_learing(
     def select_epilson_greedy_action(model, obs, t):
         prob = [0 for a in range(num_actions)]
         for a in range(num_actions):
+            obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
             prob[a] = np.exp(model(Variable(obs, volatile=True)).data[0][a].cpu().numpy())
         prob = np.array(prob)/np.sum(prob)
         return np.random.choice(num_actions, 1, p=prob)[0]
