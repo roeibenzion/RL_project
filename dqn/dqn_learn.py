@@ -116,7 +116,7 @@ def dqn_learing(
 
     # Construct an epilson greedy policy with given exploration schedule
     #this is the original setting of greedy policy
-    '''
+    
     def select_epilson_greedy_action(model, obs, t):
         sample = random.random()
         eps_threshold = exploration.value(t)
@@ -127,7 +127,7 @@ def dqn_learing(
                 return model(Variable(obs, volatile=True)).data.max(1)[1].cpu()
         else:
             return torch.IntTensor([[random.randrange(num_actions)]])
-    '''
+        
     '''
     #we'll follow lecture 6 slide 34 and choose beta_t = ln(t)
     def select_epilson_greedy_action(model, obs, t):
@@ -139,19 +139,6 @@ def dqn_learing(
         prob = np.array(prob)/np.sum(prob)
         return np.random.choice(num_actions, 1, p=prob)[0]
     '''
-    #We'll try an exponential decay of epsilon
-    epsilon_min = 0.1
-    epsilon_decay = 0.00001
-    def select_epilson_greedy_action(model, obs, decay_step):
-        explore_probability = epsilon_min + (1 - epsilon_min) * np.exp(-epsilon_decay * decay_step)
-        if explore_probability > np.random.rand():
-            obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
-            # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
-            with torch.no_grad():
-                return model(Variable(obs, volatile=True)).data.max(1)[1].cpu()
-        else:
-            return torch.IntTensor([[random.randrange(num_actions)]])
-        
     # Initialize target q function and q function, i.e. build the model.
     ######
     # YOUR CODE HERE
