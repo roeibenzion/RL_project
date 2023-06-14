@@ -34,8 +34,8 @@ def main(env, num_timesteps, pre_trained_model=None, start_from=0):
         kwargs=dict(lr=LEARNING_RATE, alpha=ALPHA, eps=EPS),
     )
 
-    exploration_schedule = LinearSchedule(1000000, 0.1)
-
+    #exploration_schedule = LinearSchedule(1000000, 0.1)
+    exploration_schedule = LinearSchedule(600000, 0.1)
     dqn_learing(
         env=env,
         q_func=DQN,
