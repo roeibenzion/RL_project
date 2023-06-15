@@ -120,7 +120,7 @@ def dqn_learing(
     def select_epilson_greedy_action(model, obs, t):
         sample = random.random()
        #eps_threshold = exploration.value(t)
-        eps_threshold = 1-pow((t/1000000),4)
+        eps_threshold = max(1-pow((t/1000000),4), 0)
         if sample > eps_threshold:
             obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
             # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
@@ -312,6 +312,7 @@ def dqn_learing(
             print("best mean reward %f" % best_mean_episode_reward)
             print("episodes %d" % len(episode_rewards))
             print("exploration %f" % (1-pow((t/1000000),4)))
+            print("exploration diff %f" % (1-pow((t/1000000),4)) - exploration.value(t))
             #print("exploration %f" % exploration.value(t))
             sys.stdout.flush()
 
