@@ -116,10 +116,11 @@ def dqn_learing(
 
     # Construct an epilson greedy policy with given exploration schedule
     #this is the original setting of greedy policy
-    
+
     def select_epilson_greedy_action(model, obs, t):
         sample = random.random()
-        eps_threshold = exploration.value(t)
+       #eps_threshold = exploration.value(t)
+        eps_threshold = 1-pow((t/1000000),4)
         if sample > eps_threshold:
             obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
             # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
@@ -127,18 +128,8 @@ def dqn_learing(
                 return model(Variable(obs, volatile=True)).data.max(1)[1].cpu()
         else:
             return torch.IntTensor([[random.randrange(num_actions)]])
-        
-    '''
-    #we'll follow lecture 6 slide 34 and choose beta_t = ln(t)
-    def select_epilson_greedy_action(model, obs, t):
-        prob = [0 for a in range(num_actions)]
-        obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
-        Q = model(Variable(obs, volatile=True)).data[0].cpu().numpy()
-        for a in range(num_actions):
-            prob[a] = np.exp(Q[a])
-        prob = np.array(prob)/np.sum(prob)
-        return np.random.choice(num_actions, 1, p=prob)[0]
-    '''
+    
+    
     # Initialize target q function and q function, i.e. build the model.
     ######
     # YOUR CODE HERE
@@ -208,12 +199,15 @@ def dqn_learing(
         # YOUR CODE HERE
         #Store last observation
         idx = replay_buffer.store_frame(last_obs)
+        '''
         #Encode recent observation
         if t == 0:
             obs = np.concatenate((last_obs, last_obs, last_obs, last_obs), 2)
             obs = np.moveaxis(obs, -1, 0)
         else:
             obs = replay_buffer.encode_recent_observation()
+        '''
+        obs = replay_buffer.encode_recent_observation()
         #Select action
         action = select_epilson_greedy_action(Q, obs, t)
         #Step environment
@@ -325,11 +319,12 @@ def dqn_learing(
                 pickle.dump(Statistic, f)
                 print("Saved to %s" % '/statistics.pkl')
             
+            '''
             import shutil
 
             # Copy the file to Google Drive
             shutil.copy('statistics.pkl', '/content/drive/MyDrive/statistics.pkl')
-            
+            '''
             
             
             
