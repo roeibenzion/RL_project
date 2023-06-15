@@ -310,9 +310,9 @@ def dqn_learing(
             print("Timestep %d" % (t))
             print("mean reward (100 episodes) %f" % mean_episode_reward)
             print("best mean reward %f" % best_mean_episode_reward)
-            #print("episodes %d" % len(episode_rewards))
-            print("exploration %f" % 1-pow((t/1000000),4))
-            print("exploration %f" % exploration.value(t))
+            print("episodes %d" % len(episode_rewards))
+            print("exploration %f" % (1-pow((t/1000000),4)))
+            #print("exploration %f" % exploration.value(t))
             sys.stdout.flush()
 
             # Dump statistics to pickle
