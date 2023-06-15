@@ -310,7 +310,8 @@ def dqn_learing(
             print("Timestep %d" % (t))
             print("mean reward (100 episodes) %f" % mean_episode_reward)
             print("best mean reward %f" % best_mean_episode_reward)
-            print("episodes %d" % len(episode_rewards))
+            #print("episodes %d" % len(episode_rewards))
+            print("exploration %f" % 1-pow((t/1000000),4))
             print("exploration %f" % exploration.value(t))
             sys.stdout.flush()
 
@@ -319,12 +320,12 @@ def dqn_learing(
                 pickle.dump(Statistic, f)
                 print("Saved to %s" % '/statistics.pkl')
             
-            '''
+            
             import shutil
 
             # Copy the file to Google Drive
             shutil.copy('statistics.pkl', '/content/drive/MyDrive/statistics.pkl')
-            '''
+            
             
             
             
