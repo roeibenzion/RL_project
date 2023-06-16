@@ -312,7 +312,6 @@ def dqn_learing(
             print("best mean reward %f" % best_mean_episode_reward)
             print("episodes %d" % len(episode_rewards))
             print("exploration %f" % (1-pow((t/1000000),4)))
-            print("exploration diff %f" % (1-pow((t/1000000),4)) - exploration.value(t))
             #print("exploration %f" % exploration.value(t))
             sys.stdout.flush()
 
