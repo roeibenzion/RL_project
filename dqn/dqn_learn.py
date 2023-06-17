@@ -116,7 +116,7 @@ def dqn_learing(
 
     # Construct an epilson greedy policy with given exploration schedule
     #this is the original setting of greedy policy
-
+    '''
     def select_epilson_greedy_action(model, obs, t):
         sample = random.random()
         #eps_threshold = exploration.value(t)
@@ -130,7 +130,22 @@ def dqn_learing(
         else:
             return torch.IntTensor([[random.randrange(num_actions)]])
     
-    
+    '''
+    #this is mine
+    def select_epilson_greedy_action(model, obs, t, prev_reward, prev_prev_reward):
+        sample = random.random()
+        #eps_threshold = exploration.value(t)
+        #eps_threshold = max(1-pow((t/1000000),4), 0.1)
+        eps_threshold = max(1-pow((t/1000000),5), 0)
+        if prev_reward - prev_prev_reward < 0.12:
+            eps_threshold = max(0.1, eps_threshold)  
+        if sample > eps_threshold:
+            obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
+            # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
+            with torch.no_grad():
+                return model(Variable(obs, volatile=True)).data.max(1)[1].cpu()
+        else:
+            return torch.IntTensor([[random.randrange(num_actions)]])
     # Initialize target q function and q function, i.e. build the model.
     ######
     # YOUR CODE HERE
@@ -210,7 +225,7 @@ def dqn_learing(
         '''
         obs = replay_buffer.encode_recent_observation()
         #Select action
-        action = select_epilson_greedy_action(Q, obs, t)
+        action = select_epilson_greedy_action(Q, obs, t, mean_episode_reward[t], best_mean_episode_reward[max(0, t-1)])
         #Step environment
         obs, reward, done, info = env.step(action)
         #Store effect
