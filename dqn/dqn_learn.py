@@ -121,7 +121,7 @@ def dqn_learing(
         sample = random.random()
         #eps_threshold = exploration.value(t)
         #eps_threshold = max(1-pow((t/1000000),4), 0.1)
-        eps_threshold = max(1-pow((t/1000000),6), 0.05)
+        eps_threshold = max(1-pow((t/1000000),6), 0)
         if sample > eps_threshold:
             obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
             # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
@@ -312,7 +312,7 @@ def dqn_learing(
             print("mean reward (100 episodes) %f" % mean_episode_reward)
             print("best mean reward %f" % best_mean_episode_reward)
             print("episodes %d" % len(episode_rewards))
-            print("exploration %f" % max(1-pow((t/1000000),6), 0.1))
+            print("exploration %f" % max(1-pow((t/1000000),5), 0))
             #print("exploration %f" % exploration.value(t))
             sys.stdout.flush()
 
