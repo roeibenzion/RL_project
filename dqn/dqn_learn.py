@@ -121,7 +121,7 @@ def dqn_learing(
         sample = random.random()
         #eps_threshold = exploration.value(t)
         #eps_threshold = max(1-pow((t/1000000),4), 0.1)
-        eps_threshold = max(1-pow((t/1000000),6), 0.1)
+        eps_threshold = max(1-pow((t/1000000),6), 0.05)
         if sample > eps_threshold:
             obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
             # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
