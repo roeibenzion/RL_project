@@ -225,7 +225,8 @@ def dqn_learing(
         '''
         obs = replay_buffer.encode_recent_observation()
         #Select action
-        action = select_epilson_greedy_action(Q, obs, t, mean_episode_reward[t], best_mean_episode_reward[max(0, t-1)])
+        #action = select_epilson_greedy_action(Q, obs, t)
+        action = select_epilson_greedy_action(Q, obs, t, mean_episode_reward[max(0,t-1)], mean_episode_reward[max(0, t-2)])
         #Step environment
         obs, reward, done, info = env.step(action)
         #Store effect
@@ -336,12 +337,12 @@ def dqn_learing(
                 pickle.dump(Statistic, f)
                 print("Saved to %s" % '/statistics.pkl')
             
-            
+            '''
             import shutil
 
             # Copy the file to Google Drive
             shutil.copy('statistics.pkl', '/content/drive/MyDrive/statistics.pkl')
-            
+            '''
             
             
             
