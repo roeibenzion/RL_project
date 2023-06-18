@@ -340,12 +340,12 @@ def dqn_learing(
                 pickle.dump(Statistic, f)
                 print("Saved to %s" % '/statistics.pkl')
             
-            '''
+            
             import shutil
 
             # Copy the file to Google Drive
             shutil.copy('statistics.pkl', '/content/drive/MyDrive/statistics.pkl')
-            '''
+            
             
             
             
