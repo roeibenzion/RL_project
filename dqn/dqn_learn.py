@@ -226,7 +226,7 @@ def dqn_learing(
         obs = replay_buffer.encode_recent_observation()
         #Select action
         #action = select_epilson_greedy_action(Q, obs, t)
-        action = select_epilson_greedy_action(Q, obs, t, Statistic['mean_episode_reward'][max(0,t-1)], Statistic['mean_episode_reward'][max(0,t-2)])
+        action = select_epilson_greedy_action(Q, obs, t, Statistic['mean_episode_rewards'][max(0,t-1)], Statistic['mean_episode_rewards'][max(0,t-2)])
         #Step environment
         obs, reward, done, info = env.step(action)
         #Store effect
