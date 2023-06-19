@@ -5,6 +5,8 @@ from dqn_model import DQN_RAM
 from dqn_learn import OptimizerSpec, dqn_learing
 from utils.gym import get_ram_env, get_wrapper_by_name
 from utils.schedule import LinearSchedule
+from utils.schedule import PiecewiseSchedule
+
 
 
 
@@ -15,8 +17,7 @@ LEARNING_STARTS=50000
 LEARNING_FREQ=4
 FRAME_HISTORY_LEN=1
 TARGER_UPDATE_FREQ=10000
-#LEARNING_RATE = 0.00025
-LEARNING_RATE = 1e-3
+LEARNING_RATE = 0.00025
 ALPHA = 0.95
 EPS = 0.01
 
@@ -34,6 +35,10 @@ def main(env, num_timesteps=int(1e7)):
     )
 
     exploration_schedule = LinearSchedule(1000000, 0.1)
+    l = []
+    for i in range(0, 1000000, 10000):
+        l.append((i, max(1 - i / 1000000, 0.1)))
+    exploration_schedule = PiecewiseSchedule(l)
 
     dqn_learing(
         env=env,
