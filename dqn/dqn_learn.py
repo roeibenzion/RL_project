@@ -55,6 +55,7 @@ def dqn_learing(
     learning_freq=4,
     frame_history_len=4,
     target_update_freq=10000,
+    pre_trained_model=None,
     ):
 
     """Run Deep Q-learning algorithm.
@@ -115,10 +116,12 @@ def dqn_learing(
 
     # Construct an epilson greedy policy with given exploration schedule
     #this is the original setting of greedy policy
-    
+    '''
     def select_epilson_greedy_action(model, obs, t):
         sample = random.random()
-        eps_threshold = exploration.value(t)
+        #eps_threshold = exploration.value(t)
+        #eps_threshold = max(1-pow((t/1000000),4), 0.1)
+        eps_threshold = max(1-pow((t/1000000),5), 0)
         if sample > eps_threshold:
             obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
             # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
@@ -127,6 +130,19 @@ def dqn_learing(
         else:
             return torch.IntTensor([[random.randrange(num_actions)]])
     
+    '''
+    #this is mine
+    def select_epilson_greedy_action(model, obs, t):
+        sample = random.random()
+        #eps_threshold = exploration.value(t)
+        eps_threshold = max(1-pow((t/1000000),3), 0.1)
+        if sample > eps_threshold:
+            obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
+            # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
+            with torch.no_grad():
+                return model(Variable(obs, volatile=True)).data.max(1)[1].cpu()
+        else:
+            return torch.IntTensor([[random.randrange(num_actions)]])
     # Initialize target q function and q function, i.e. build the model.
     ######
     # YOUR CODE HERE
@@ -309,7 +325,8 @@ def dqn_learing(
             print("mean reward (100 episodes) %f" % mean_episode_reward)
             print("best mean reward %f" % best_mean_episode_reward)
             print("episodes %d" % len(episode_rewards))
-            print("exploration %f" % exploration.value(t))
+            print("exploration %f" % max(1-pow((t/1000000),5), 0))
+            #print("exploration %f" % exploration.value(t))
             sys.stdout.flush()
 
             # Dump statistics to pickle
