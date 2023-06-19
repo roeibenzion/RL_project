@@ -16,14 +16,13 @@ LEARNING_STARTS = 50000
 LEARNING_FREQ = 4
 FRAME_HISTORY_LEN = 4
 TARGER_UPDATE_FREQ = 10000
-LEARNING_RATE = 0.00025
-#LEARNING_RATE = 1e-3
+#LEARNING_RATE = 0.00025
+LEARNING_RATE = 1e-3
 ALPHA = 0.95
 EPS = 0.01
 
-def my_func(t, power=3, epsilon=0.1):
-    return max(epsilon, 1 - (t / 1000000) ** power)
-def main(env, num_timesteps, pre_trained_model=None, start_from=0):
+
+def main(env, num_timesteps):
 
     def stopping_criterion(env):
         # notice that here t is the number of steps of the wrapped env,
@@ -38,7 +37,7 @@ def main(env, num_timesteps, pre_trained_model=None, start_from=0):
     )
 
     exploration_schedule = LinearSchedule(1000000, 0.1)
-    exploration_schedule = my_func(1000000, 3, 0.1)
+    #exploration_schedule = my_func(1000000, 3, 0.1)
     dqn_learing(
         env=env,
         q_func=DQN,
@@ -64,17 +63,5 @@ if __name__ == '__main__':
     # Run training
     seed = 0 # Use a seed of zero (you may want to randomize the seed!)
     env = get_env(task, seed)
-
-    #open pre_trained_model if exists
-    pre_trained_model = None
-    Q_pckl = None
-    target_pckl = None
-    my_stats = None
-    start_from = 0
-    '''
-    from google.colab import drive
-
-    drive.mount('/content/drive')
-    '''
     
-    main(env, 1e6 * 16, pre_trained_model)
+    main(env, task.max_timesteps)
