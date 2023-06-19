@@ -18,7 +18,7 @@ class ConstantSchedule(object):
 
     def value(self, t):
         """See Schedule.value"""
-        return self._v
+        return 2*self._v
 
 def linear_interpolation(l, r, alpha):
     return l + alpha * (r - l)
