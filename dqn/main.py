@@ -16,11 +16,13 @@ LEARNING_STARTS = 50000
 LEARNING_FREQ = 4
 FRAME_HISTORY_LEN = 4
 TARGER_UPDATE_FREQ = 10000
-LEARNING_RATE = 0.00025
-#LEARNING_RATE = 3e-4
+#LEARNING_RATE = 0.00025
+LEARNING_RATE = 1e-3
 ALPHA = 0.95
 EPS = 0.01
 
+def my_func(t, power=3, epsilon=0.1):
+    return max(epsilon, 1 - (t / 1000000) ** power)
 def main(env, num_timesteps, pre_trained_model=None, start_from=0):
 
     def stopping_criterion(env):
@@ -35,8 +37,8 @@ def main(env, num_timesteps, pre_trained_model=None, start_from=0):
         kwargs=dict(lr=LEARNING_RATE, alpha=ALPHA, eps=EPS),
     )
 
-    #exploration_schedule = LinearSchedule(1000000, 0.1)
-    exploration_schedule = LinearSchedule(600000, 0.1)
+    exploration_schedule = LinearSchedule(1000000, 0.1)
+    exploration_schedule = my_func(1000000, 3, 0.1)
     dqn_learing(
         env=env,
         q_func=DQN,
