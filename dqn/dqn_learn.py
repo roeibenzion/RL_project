@@ -50,7 +50,7 @@ def dqn_learing(
     stopping_criterion=None,
     replay_buffer_size=1000000,
     batch_size=32,
-    gamma=0.999,
+    gamma=0.9999,
     learning_starts=50000,
     learning_freq=4,
     frame_history_len=4,
