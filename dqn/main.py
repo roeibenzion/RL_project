@@ -38,7 +38,7 @@ def main(env, num_timesteps):
         kwargs=dict(lr=LEARNING_RATE),
     )
 
-    exploration_schedule = LinearSchedule(1000000, 0.15)
+    exploration_schedule = LinearSchedule(1000000, 0.1)
     '''
     l = []
     for i in range(0, 1000000, 10000):
