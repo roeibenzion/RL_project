@@ -114,23 +114,6 @@ def dqn_learing(
     num_actions = env.action_space.n
 
     # Construct an epilson greedy policy with given exploration schedule
-    #this is the original setting of greedy policy
-    '''
-    def select_epilson_greedy_action(model, obs, t):
-        sample = random.random()
-        #eps_threshold = exploration.value(t)
-        #eps_threshold = max(1-pow((t/1000000),4), 0.1)
-        eps_threshold = max(1-pow((t/1000000),5), 0)
-        if sample > eps_threshold:
-            obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
-            # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
-            with torch.no_grad():
-                return model(Variable(obs, volatile=True)).data.max(1)[1].cpu()
-        else:
-            return torch.IntTensor([[random.randrange(num_actions)]])
-    
-    '''
-    #this is mine
     def select_epilson_greedy_action(model, obs, t):
         sample = random.random()
         eps_threshold = exploration.value(t)
@@ -258,7 +241,7 @@ def dqn_learing(
             if USE_CUDA:
                 Q = Q.cuda()
                 target_q_func = target_q_func.cuda()
-                
+
             #Sample transitions if possible
             if replay_buffer.can_sample(batch_size):
                 batch_transitions = replay_buffer.sample(batch_size)
@@ -279,7 +262,8 @@ def dqn_learing(
 
                 #Compute current and next Q values
                 current_q_values = Q(obs_batch).gather(1, act_batch.unsqueeze(1)).squeeze()
-                next_q_values = target_q_func(next_obs_batch).detach().max(1)[0]
+                next_q_values = target_q_func(next_obs_batch).max(1)[0]
+                #next_q_values = target_q_func(next_obs_batch).detach().max(1)[0]
                 #Compute Bellman error
                 error = rew_batch + gamma * next_q_values * (1 - done_mask) - current_q_values
                 #Clip error between [-1,1]
