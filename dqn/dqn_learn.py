@@ -255,6 +255,10 @@ def dqn_learing(
             #####
             # YOUR CODE HERE
 
+            if USE_CUDA:
+                Q = Q.cuda()
+                target_q_func = target_q_func.cuda()
+                
             #Sample transitions if possible
             if replay_buffer.can_sample(batch_size):
                 batch_transitions = replay_buffer.sample(batch_size)
