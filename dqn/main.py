@@ -11,17 +11,30 @@ import pickle
 import os
 
 BATCH_SIZE = 32
-GAMMA = 0.99
+GAMMA = 0.995
 REPLAY_BUFFER_SIZE = 1000000
 LEARNING_STARTS = 50000
 LEARNING_FREQ = 4
 FRAME_HISTORY_LEN = 4
 TARGER_UPDATE_FREQ = 10000
 #LEARNING_RATE = 0.00025
-LEARNING_RATE = 1e-4
+LEARNING_RATE = 3e-4
 ALPHA = 0.95
 EPS = 0.01
 
+def plot_from_stat_pickle(stat_pickle_path):
+    with open(stat_pickle_path, 'rb') as f:
+        stat = pickle.load(f)
+    import matplotlib.pyplot as plt
+    #use scientific notation
+    plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+    plt.xlabel('timestamps')
+    plt.ylabel('Mean episode reward')
+    plt.plot(stat['mean_episode_rewards'])
+    #same for best mean reward
+    plt.plot(stat['best_mean_episode_rewards'])
+    plt.legend(['mean_episode_rewards', 'best_mean_episode_rewards'])
+    plt.show()
 def main(env, num_timesteps):
 
     def stopping_criterion(env):
@@ -39,13 +52,6 @@ def main(env, num_timesteps):
     )
 
     exploration_schedule = LinearSchedule(1000000, 0.15)
-    '''
-    l = []
-    for i in range(0, 1000000, 10000):
-        l.append((i, max(1 - i / 1000000, 0.1)))
-    exploration_schedule = PiecewiseSchedule(l)
-    #exploration_schedule = my_func(1000000, 3, 0.1)
-    '''
     dqn_learing(
         env=env,
         q_func=DQN,
