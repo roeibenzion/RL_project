@@ -50,12 +50,11 @@ def dqn_learing(
     stopping_criterion=None,
     replay_buffer_size=1000000,
     batch_size=32,
-    gamma=0.999,
+    gamma=0.99,
     learning_starts=50000,
     learning_freq=4,
     frame_history_len=4,
     target_update_freq=10000,
-    pre_trained_model=None,
     ):
 
     """Run Deep Q-learning algorithm.
@@ -135,7 +134,6 @@ def dqn_learing(
     def select_epilson_greedy_action(model, obs, t):
         sample = random.random()
         eps_threshold = exploration.value(t)
-        #eps_threshold = max(1-pow((t/1000000),3), 0.1)
         if sample > eps_threshold:
             obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
             # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
@@ -147,17 +145,13 @@ def dqn_learing(
     ######
     # YOUR CODE HERE
 
-    #check if a file called statistics.pkl exists in the git repository
-    if os.path.isfile('statistics.pkl'):
-        print("statistics.pkl exists")
-
     Q = q_func(input_arg, num_actions)
     target_q_func = q_func(input_arg, num_actions)
     target_q_func.load_state_dict(Q.state_dict())
 
     if USE_CUDA:
-            Q = Q.cuda()
-            target_q_func = target_q_func.cuda()
+        Q = Q.cuda()
+        target_q_func = target_q_func.cuda()
     ######
     # Construct Q network optimizer function
     optimizer = optimizer_spec.constructor(Q.parameters(), **optimizer_spec.kwargs)
@@ -212,17 +206,9 @@ def dqn_learing(
         # YOUR CODE HERE
         #Store last observation
         idx = replay_buffer.store_frame(last_obs)
-        '''
         #Encode recent observation
-        if t == 0:
-            obs = np.concatenate((last_obs, last_obs, last_obs, last_obs), 2)
-            obs = np.moveaxis(obs, -1, 0)
-        else:
-            obs = replay_buffer.encode_recent_observation()
-        '''
         obs = replay_buffer.encode_recent_observation()
         #Select action
-        #action = select_epilson_greedy_action(Q, obs, t)
         action = select_epilson_greedy_action(Q, obs, t)
         #Step environment
         obs, reward, done, info = env.step(action)
@@ -268,11 +254,6 @@ def dqn_learing(
             #      variable num_param_updates useful for this (it was initialized to 0)
             #####
             # YOUR CODE HERE
-
-            #Use cuda if available
-            if USE_CUDA:
-                Q = Q.cuda()
-                target_q_func = target_q_func.cuda()
 
             #Sample transitions if possible
             if replay_buffer.can_sample(batch_size):
