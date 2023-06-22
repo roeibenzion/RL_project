@@ -294,8 +294,7 @@ def dqn_learing(
             print("mean reward (100 episodes) %f" % mean_episode_reward)
             print("best mean reward %f" % best_mean_episode_reward)
             print("episodes %d" % len(episode_rewards))
-            print("exploration %f" % max(1-pow((t/1000000),5), 0))
-            #print("exploration %f" % exploration.value(t))
+            print("exploration %f" % exploration.value(t))
             sys.stdout.flush()
 
             # Dump statistics to pickle
