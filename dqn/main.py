@@ -17,8 +17,8 @@ LEARNING_STARTS = 50000
 LEARNING_FREQ = 4
 FRAME_HISTORY_LEN = 4
 TARGER_UPDATE_FREQ = 10000
-#LEARNING_RATE = 0.00025
-LEARNING_RATE = 1e-4
+LEARNING_RATE = 0.00025
+#LEARNING_RATE = 1e-4
 ALPHA = 0.95
 EPS = 0.01
 
@@ -43,10 +43,10 @@ def main(env, num_timesteps):
         return get_wrapper_by_name(env, "Monitor").get_total_steps() >= num_timesteps
 
     optimizer_spec = OptimizerSpec(
-        #constructor=optim.RMSprop,
-        #kwargs=dict(lr=LEARNING_RATE, alpha=ALPHA, eps=EPS),
-        constructor=optim.Adam,
-        kwargs=dict(lr=LEARNING_RATE),
+        constructor=optim.RMSprop,
+        kwargs=dict(lr=LEARNING_RATE, alpha=ALPHA, eps=EPS),
+        #constructor=optim.Adam,
+        #kwargs=dict(lr=LEARNING_RATE),
     )
 
     exploration_schedule = LinearSchedule(1000000, 0.1)
