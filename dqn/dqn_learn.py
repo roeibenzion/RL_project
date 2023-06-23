@@ -127,7 +127,7 @@ def dqn_learing(
     # Initialize target q function and q function, i.e. build the model.
     ######
     # YOUR CODE HERE
-
+    print(gamma)
     Q = q_func(input_arg, num_actions)
     target_q_func = q_func(input_arg, num_actions)
     target_q_func.load_state_dict(Q.state_dict())
