@@ -56,6 +56,7 @@ def dqn_learing(
     frame_history_len=4,
     target_update_freq=10000,
     is_ddqn=False,
+    is_bonus=False,
     ):
 
     """Run Deep Q-learning algorithm.
@@ -115,9 +116,12 @@ def dqn_learing(
     num_actions = env.action_space.n
 
     # Construct an epilson greedy policy with given exploration schedule
-    def select_epilson_greedy_action(model, obs, t):
+    def select_epilson_greedy_action(model, obs, t, is_bonus=False):
         sample = random.random()
-        eps_threshold = exploration.value(t)
+        if is_bonus:
+            eps_threshold = max(1-(t/1000000)**3, 0.1) 
+        else:
+            eps_threshold = exploration.value(t)
         if sample > eps_threshold:
             obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
             # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
@@ -193,7 +197,7 @@ def dqn_learing(
         #Encode recent observation
         obs = replay_buffer.encode_recent_observation()
         #Select action
-        action = select_epilson_greedy_action(Q, obs, t)
+        action = select_epilson_greedy_action(Q, obs, t, is_bonus)
         #Step environment
         obs, reward, done, info = env.step(action)
         #Store effect
