@@ -55,6 +55,7 @@ def dqn_learing(
     learning_freq=4,
     frame_history_len=4,
     target_update_freq=10000,
+    is_ddqn=False,
     ):
 
     """Run Deep Q-learning algorithm.
@@ -127,7 +128,7 @@ def dqn_learing(
     # Initialize target q function and q function, i.e. build the model.
     ######
     # YOUR CODE HERE
-    print(gamma)
+
     Q = q_func(input_arg, num_actions)
     target_q_func = q_func(input_arg, num_actions)
     target_q_func.load_state_dict(Q.state_dict())
@@ -262,8 +263,12 @@ def dqn_learing(
 
                 #Compute current and next Q values
                 current_q_values = Q(obs_batch).gather(1, act_batch.unsqueeze(1)).squeeze()
-                next_q_values = target_q_func(next_obs_batch).max(1)[0]
-                #next_q_values = target_q_func(next_obs_batch).detach().max(1)[0]
+                if not is_ddqn:
+                    next_q_values = target_q_func(next_obs_batch).max(1)[0]
+                else:
+                    #next_q = r_t + Q(st+1, argmax(Q(st+1, a)))
+                    next_q_values = Q(next_obs_batch).max(1)[0]
+                    next_q_values = target_q_func(next_obs_batch).gather(1, next_q_values.unsqueeze(1)).squeeze()
                 #Compute Bellman error
                 error = rew_batch + gamma * next_q_values * (1 - done_mask) - current_q_values
                 #Clip error between [-1,1]
