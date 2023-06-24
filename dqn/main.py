@@ -10,7 +10,7 @@ from utils.schedule import PiecewiseSchedule
 import pickle
 
 BATCH_SIZE = 32
-GAMMA = 0.999
+GAMMA = 0.99
 REPLAY_BUFFER_SIZE = 1000000
 LEARNING_STARTS = 50000
 LEARNING_FREQ = 4
@@ -59,7 +59,8 @@ def main(env, num_timesteps):
         learning_freq=LEARNING_FREQ,
         frame_history_len=FRAME_HISTORY_LEN,
         target_update_freq=TARGER_UPDATE_FREQ,
-        is_ddqn=False
+        is_ddqn=True, 
+        is_bonus=False
     )
 
 if __name__ == '__main__':
@@ -73,5 +74,6 @@ if __name__ == '__main__':
     seed = 0 # Use a seed of zero (you may want to randomize the seed!)
     env = get_env(task, seed)
     
-    main(env, task.max_timesteps)
-    
+    #main(env, task.max_timesteps)
+
+   
