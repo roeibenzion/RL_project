@@ -10,7 +10,7 @@ from utils.schedule import PiecewiseSchedule
 import pickle
 
 BATCH_SIZE = 32
-GAMMA = 0.99
+GAMMA = 0.999
 REPLAY_BUFFER_SIZE = 1000000
 LEARNING_STARTS = 50000
 LEARNING_FREQ = 4
@@ -59,7 +59,7 @@ def main(env, num_timesteps):
         learning_freq=LEARNING_FREQ,
         frame_history_len=FRAME_HISTORY_LEN,
         target_update_freq=TARGER_UPDATE_FREQ,
-        is_ddqn=True
+        is_ddqn=False
     )
 
 if __name__ == '__main__':
