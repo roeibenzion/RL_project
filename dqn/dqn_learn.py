@@ -267,7 +267,7 @@ def dqn_learing(
                     next_q_values = target_q_func(next_obs_batch).max(1)[0]
                 else:
                     #next_q = r_t + Q(st+1, argmax(Q(st+1, a)))
-                    next_q_values = Q(next_obs_batch).max(1)[0]
+                    next_q_values = Q(next_obs_batch).max(1)[1]
                     next_q_values = target_q_func(next_obs_batch).gather(1, next_q_values.unsqueeze(1)).squeeze()
                 #Compute Bellman error
                 error = rew_batch + gamma * next_q_values * (1 - done_mask) - current_q_values
