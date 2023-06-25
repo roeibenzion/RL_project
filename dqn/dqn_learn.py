@@ -17,9 +17,6 @@ import torch.autograd as autograd
 from utils.replay_buffer import ReplayBuffer
 from utils.gym import get_wrapper_by_name
 
-import matplotlib.pyplot as plt
-
-import os
 
 USE_CUDA = torch.cuda.is_available()
 dtype = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.FloatTensor
@@ -116,12 +113,9 @@ def dqn_learing(
     num_actions = env.action_space.n
 
     # Construct an epilson greedy policy with given exploration schedule
-    def select_epilson_greedy_action(model, obs, t, is_bonus=False):
+    def select_epilson_greedy_action(model, obs, t):
         sample = random.random()
-        if is_bonus:
-            eps_threshold = max(1-(t/1000000)**3, 0.1) 
-        else:
-            eps_threshold = exploration.value(t)
+        eps_threshold = exploration.value(t)
         if sample > eps_threshold:
             obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
             # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
@@ -270,7 +264,7 @@ def dqn_learing(
                 if not is_ddqn:
                     next_q_values = target_q_func(next_obs_batch).max(1)[0]
                 else:
-                    #next_q = r_t + Q(st+1, argmax(Q(st+1, a)))
+                    #next_q = r_t + Q_tar(st+1, argmax(Q(st+1, a)))
                     next_q_values = Q(next_obs_batch).max(1)[1]
                     next_q_values = target_q_func(next_obs_batch).gather(1, next_q_values.unsqueeze(1)).squeeze()
                 #Compute Bellman error
@@ -303,10 +297,7 @@ def dqn_learing(
             print("mean reward (100 episodes) %f" % mean_episode_reward)
             print("best mean reward %f" % best_mean_episode_reward)
             print("episodes %d" % len(episode_rewards))
-            if is_bonus:
-                print("exploration %f" % max(1-(t/1000000)**3, 0.1))
-            else:
-                print("exploration %f" % exploration.value(t))
+            print("exploration %f" % exploration.value(t))
             sys.stdout.flush()
 
             # Dump statistics to pickle
@@ -314,11 +305,7 @@ def dqn_learing(
                 pickle.dump(Statistic, f)
                 print("Saved to %s" % '/statistics.pkl')
             
-            
-            import shutil
-
-            # Copy the file to Google Drive
-            shutil.copy('statistics.pkl', '/content/drive/MyDrive/statistics.pkl')
+           
             
             
             
