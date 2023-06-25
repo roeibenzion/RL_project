@@ -191,7 +191,7 @@ def dqn_learing(
         #Encode recent observation
         obs = replay_buffer.encode_recent_observation()
         #Select action
-        action = select_epilson_greedy_action(Q, obs, t, is_bonus)
+        action = select_epilson_greedy_action(Q, obs, t)
         #Step environment
         obs, reward, done, info = env.step(action)
         #Store effect
