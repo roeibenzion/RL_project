@@ -53,7 +53,6 @@ def dqn_learing(
     frame_history_len=4,
     target_update_freq=10000,
     is_ddqn=False,
-    is_bonus=False,
     ):
 
     """Run Deep Q-learning algorithm.
