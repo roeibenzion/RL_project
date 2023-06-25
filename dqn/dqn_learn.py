@@ -119,7 +119,7 @@ def dqn_learing(
     def select_epilson_greedy_action(model, obs, t, is_bonus=False):
         sample = random.random()
         if is_bonus:
-            eps_threshold = max(1-(t/1000000)**3, 0.07) 
+            eps_threshold = max(1-(t/1000000)**3, 0.1) 
         else:
             eps_threshold = exploration.value(t)
         if sample > eps_threshold:
@@ -304,7 +304,7 @@ def dqn_learing(
             print("best mean reward %f" % best_mean_episode_reward)
             print("episodes %d" % len(episode_rewards))
             if is_bonus:
-                print("exploration %f" % max(1-(t/1000000)**3, 0.07))
+                print("exploration %f" % max(1-(t/1000000)**3, 0.1))
             else:
                 print("exploration %f" % exploration.value(t))
             sys.stdout.flush()
