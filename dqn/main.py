@@ -5,9 +5,7 @@ from dqn_model import DQN
 from dqn_learn import OptimizerSpec, dqn_learing
 from utils.gym import get_env, get_wrapper_by_name
 from utils.schedule import LinearSchedule
-from utils.schedule import PiecewiseSchedule
 
-import pickle
 
 BATCH_SIZE = 32
 GAMMA = 0.99
@@ -20,19 +18,6 @@ LEARNING_RATE = 0.00025
 ALPHA = 0.95
 EPS = 0.01
 
-def plot_from_stat_pickle(stat_pickle_path):
-    with open(stat_pickle_path, 'rb') as f:
-        stat = pickle.load(f)
-    import matplotlib.pyplot as plt
-    #use scientific notation
-    plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
-    plt.xlabel('timestamps')
-    plt.ylabel('Mean episode reward')
-    plt.plot(stat['mean_episode_rewards'])
-    #same for best mean reward
-    plt.plot(stat['best_mean_episode_rewards'])
-    plt.legend(['mean_episode_rewards', 'best_mean_episode_rewards'])
-    plt.show()
 def main(env, num_timesteps):
 
     def stopping_criterion(env):
@@ -59,8 +44,7 @@ def main(env, num_timesteps):
         learning_freq=LEARNING_FREQ,
         frame_history_len=FRAME_HISTORY_LEN,
         target_update_freq=TARGER_UPDATE_FREQ,
-        is_ddqn=True, 
-        is_bonus=False
+        is_ddqn=False, 
     )
 
 if __name__ == '__main__':
@@ -75,5 +59,4 @@ if __name__ == '__main__':
     env = get_env(task, seed)
     
     main(env, task.max_timesteps)
-
-   
+    
