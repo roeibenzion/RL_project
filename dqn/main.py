@@ -59,8 +59,8 @@ def main(env, num_timesteps):
         learning_freq=LEARNING_FREQ,
         frame_history_len=FRAME_HISTORY_LEN,
         target_update_freq=TARGER_UPDATE_FREQ,
-        is_ddqn=False, 
-        is_bonus=True
+        is_ddqn=True, 
+        is_bonus=False
     )
 
 if __name__ == '__main__':
