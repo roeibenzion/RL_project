@@ -114,8 +114,7 @@ def dqn_learing(
     # Construct an epilson greedy policy with given exploration schedule
     def select_epilson_greedy_action(model, obs, t):
         sample = random.random()
-        #eps_threshold = exploration.value(t)
-        eps_threshold = max(0.1, 1-((t/10**6))**3)
+        eps_threshold = exploration.value(t)
         if sample > eps_threshold:
             obs = torch.from_numpy(obs).type(dtype).unsqueeze(0) / 255.0
             # with torch.no_grad() variable is only used in inference mode, i.e. don’t save the history
